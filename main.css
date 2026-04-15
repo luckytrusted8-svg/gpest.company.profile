@@ -61,17 +61,14 @@
       background-image:url('assets/img/animasi-G-PEST3.jpg');
       background-size:cover; background-position:center top;
     }
+    /* ── HERO OVERLAY — dibuat terang, tidak digelapkan ── */
     .hero-overlay {
-      position:absolute; inset:0;
-      background:linear-gradient(100deg,
-        rgba(8,18,40,.93) 0%,
-        rgba(10,24,50,.82) 42%,
-        rgba(10,28,55,.35) 70%,
-        rgba(10,28,55,.04) 100%);
+      display: none;
     }
+
     .hero-overlay-b {
-      position:absolute; bottom:0; left:0; right:0; height:160px;
-      background:linear-gradient(to bottom,transparent,rgba(8,18,40,.55));
+      display: none;
+
     }
     .hero-inner {
       position:relative; z-index:2;
@@ -528,5 +525,182 @@
   .btn-wa-send {
     width: 100%;
     box-sizing: border-box;
+  }
+}
+/* ============================================================
+   HERO MOBILE FIX
+   Tempel di bagian PALING BAWAH main.css (setelah semua style)
+   ============================================================ */
+
+/* ── FIX DESKTOP: pastikan hero-image tidak overlap hero-text ── */
+.hero-content {
+  display: flex;
+  align-items: flex-end;          /* rata bawah */
+  justify-content: space-between;
+  gap: 32px;
+}
+
+.hero-text {
+  flex: 0 0 auto;
+  max-width: 520px;               /* batasi lebar teks agar tidak membentang ke gambar */
+  z-index: 2;
+}
+
+.hero-image {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  overflow: visible;
+  max-height: calc(100vh - 66px);
+  pointer-events: none;
+}
+
+.hero-image img {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+/* ── FIX OVERLAY DESKTOP: sedikit lebih terang biar gambar tetap kelihatan ── */
+.hero-overlay {
+  background: linear-gradient(
+    105deg,
+    rgba(8, 18, 40, 0.90) 0%,
+    rgba(10, 24, 50, 0.75) 38%,
+    rgba(10, 28, 55, 0.20) 65%,
+    rgba(10, 28, 55, 0.00) 100%
+  ) !important;
+}
+
+/* ── MOBILE HERO FIX (max-width: 768px) ── */
+@media (max-width: 768px) {
+
+  /* 1. Hilangkan overlay gelap – biar gambar background jelas */
+  .hero-overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(6, 14, 34, 0.72) 0%,
+      rgba(6, 14, 34, 0.45) 55%,
+      rgba(6, 14, 34, 0.65) 100%
+    ) !important;
+  }
+
+  /* Hilangkan overlay bawah juga */
+  .hero-overlay-b {
+    display: none;
+  }
+
+  /* 2. Susun konten: gambar di atas, teks di bawah – tidak saling menutupi */
+  .hero-inner {
+    padding: 16px 20px 80px;
+  }
+
+  .hero-content {
+    flex-direction: column;          /* stack vertikal */
+    align-items: center;
+    gap: 0;
+  }
+
+  /* 3. Gambar teknisi: tampil di atas, proporsional, TIDAK blur */
+  .hero-image {
+    order: -1;                       /* gambar di atas */
+    width: 100%;
+    max-height: 260px;
+    justify-content: center;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+
+  .hero-image img {
+    max-width: 240px;
+    width: auto;
+    height: 260px;
+    object-fit: contain;
+    object-position: bottom center;
+    /* HAPUS filter blur jika ada */
+    filter: none !important;
+    -webkit-filter: none !important;
+  }
+
+  /* 4. Teks: di bawah gambar, teks lebih kecil agar rapi */
+  .hero-text {
+    order: 1;
+    max-width: 100%;
+    text-align: center;
+    padding-top: 12px;
+  }
+
+  /* Badge */
+  .hero-badge {
+    font-size: 10px;
+    padding: 5px 14px;
+    margin-bottom: 14px;
+  }
+
+  /* Judul besar */
+  .hero-title {
+    font-size: clamp(38px, 11vw, 58px) !important;
+    letter-spacing: -1px;
+    line-height: 0.92;
+    margin-bottom: 10px;
+  }
+
+  /* Subjudul */
+  .hero-subtitle {
+    font-size: clamp(15px, 4vw, 20px) !important;
+    margin-bottom: 20px;
+  }
+
+  /* Tombol CTA */
+  .btn-hero {
+    padding: 12px 28px;
+    font-size: 14px;
+    width: auto;
+    display: inline-flex;
+    justify-content: center;
+  }
+
+  /* Statistik */
+  .hero-stats {
+    gap: 14px;
+    margin-top: 28px;
+    padding-top: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .hero-stat .num {
+    font-size: 26px;
+  }
+
+  .hero-stat .lbl {
+    font-size: 9.5px;
+  }
+}
+
+/* ── EXTRA SMALL (HP kecil < 420px) ── */
+@media (max-width: 420px) {
+  .hero-title {
+    font-size: clamp(32px, 10vw, 44px) !important;
+  }
+
+  .hero-image {
+    max-height: 200px;
+  }
+
+  .hero-image img {
+    height: 200px;
+    max-width: 180px;
+  }
+
+  .hero-stats {
+    gap: 10px;
+  }
+
+  .hero-stat .num {
+    font-size: 22px;
   }
 }
